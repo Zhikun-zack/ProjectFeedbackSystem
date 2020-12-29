@@ -40,5 +40,5 @@ const gStartegy = new GoogleStrategy({
 const agent = new HttpsProxyAgent(process.env.HTTP_PROXY || "http://localhost:1080");
 gStartegy._oauth2.setAgent(agent);
 
-//passport end strategy
+//passport end strategyasd
 passport.use(gStartegy);

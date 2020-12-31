@@ -10,7 +10,7 @@ const App = () => {
     return (
         <div>
             <BrowserRouter>
-                <div>
+                <div className = "container">
                     <Header></Header> {/*The header will always shows on the top of the screen*/}
                     <Route exact path = "/" component = {Landing}></Route>
                     <Route exact path = "/surveys" component = {Dashboard}></Route>

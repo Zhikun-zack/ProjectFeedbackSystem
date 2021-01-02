@@ -8,6 +8,7 @@ import reduxThunk from "redux-thunk";
 import App from "./components/App";
 import reducers from "./reducers";
 
+//Use combineReducer(collection of all reducers) to create a store
 const store = createStore(reducers,{},applyMiddleware(reduxThunk));
 
 ReactDOM.render(

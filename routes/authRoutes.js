@@ -7,11 +7,20 @@ module.exports = app =>{
     })
     );
 
-    app.get('/auth/google/callback',passport.authenticate('google',{failWithError: true}));
+    app.get(
+        '/auth/google/callback',
+        passport.authenticate('google',{failWithError: true}),
+        (req,res) => {
+            //Get the callback results and change the route to new route
+            //When clicked log in with google and authorized the browser, change the page to the Dashboard page(/survey)
+            res.redirect('/surveys');
+        }
+    );
 
     app.get('/api/logout', (req, res) => {
         req.logout();
-        res.send(req.user);
+        //When go to the /logout page and log out, user will kick back to the landing page 
+        res.redirect('/');
     })
 
     app.get('/api/current_user', (req,res) => {

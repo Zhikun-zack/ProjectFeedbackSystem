@@ -4,12 +4,16 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require("./config/keys");
+const bodyParser = require('body-parser');
 require('./models/User');
 require('./services/passport');
 
 mongoose.connect(keys.mongoURI);
 
 const app = express();
+
+//A middleware, parse the incomming json information and store it in req.body
+app.use(bodyParser.json());
 
 app.use(
     cookieSession({

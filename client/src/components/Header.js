@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {connect} from "react-redux";
 import { Link } from "react-router-dom";
+import Payments from "./Payment";
 
 class Header extends Component {
     //Used to change the page based on the auth value
@@ -15,7 +16,10 @@ class Header extends Component {
                 );
             default: 
             ///api/logout is related to server/reducers/authReducers  not the client side
-                return <li><a href = "/api/logout">Logout</a></li>
+                return [
+                    <li key = "1"><Payments></Payments></li>,
+                    <li key = "2"><a href = "/api/logout">Logout</a></li>
+            ];
         }
     }
 

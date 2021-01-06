@@ -18,6 +18,9 @@ class Header extends Component {
             ///api/logout is related to server/reducers/authReducers  not the client side
                 return [
                     <li key = "1"><Payments></Payments></li>,
+                    <li key = "3" style = {{margin:"0 10px"}}>
+                        Credits: {this.props.auth.credits}
+                    </li>,
                     <li key = "2"><a href = "/api/logout">Logout</a></li>
             ];
         }

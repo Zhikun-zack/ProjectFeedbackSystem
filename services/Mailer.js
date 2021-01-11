@@ -43,6 +43,7 @@ class Mailer extends helper.Mail {
             personalize.addTo(recipient);
         });
         this.addPersonalization(personalize);
+        //
     }
 }
 

@@ -10,8 +10,8 @@ module.exports = app => {
     app.get("api/surveys/thanks", (req,res) => {
         res.send("Thanks for voting!");
     });
-    
-    app.post('/api/surveys', requireLogin, requireCredit, (req,res) => {
+
+    app.post('/api/surveys', requireLogin, requireCredit,async (req,res) => {
         const { title, subject, body, recipients } = req.body;
         //Create a instance in Survey collection
         const survey = new Survey({
@@ -26,7 +26,7 @@ module.exports = app => {
 
         //Place to send an email
         //It contains two input params, survey is the content, object type,  and the surveyTemplate is the HTML template which contains the information in the survey
-        const mailer = new Mailer(survey, surveyTemplate);
+        const mailer = new Mailer(survey, surveyTemplate(survey));
         try{
             await mailer.send();
             await survey.save();

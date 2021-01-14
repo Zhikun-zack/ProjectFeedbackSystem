@@ -5,21 +5,17 @@ import React, { Component } from "react";
 import { reduxForm, Field } from "redux-form";
 import SurveyFeild from "./SurveyField";
 import {Link} from "react-router-dom";
+import validateEmails from "../../utils/validateEmails";
+import formFields from "./formFeild";
 
-//a var which contains all the attributs of Fields
-const FIELDS = [
-    { label: "Survey Title", name: 'title' },
-    { label: "Subject Line", name: 'subject'},
-    { label: 'Email Body', name: 'body'},
-    { label: 'Recipient List', name: 'emails'}
-];
+
 
 class SurveyForm extends Component{
     //used to render the fields and use the field defined myself not using Field library directly
     renderFields(){
         return (
             //execute the function on each records in FIELDS
-            _.map(FIELDS,({ label, name }) => {
+            _.map(formFields,({ label, name }) => {
                 return <Field key={name} component={SurveyFeild} type= "text" label={label} name={ name }/>
             })
         )
@@ -27,8 +23,8 @@ class SurveyForm extends Component{
     render( ){
         return (
             <div>
-                {/** onSubmit is working when button which type is submit be clicked and the value is the words input in a object type*/}
-                <form onSubmit = {this.props.handleSubmit(value => console.log(value))}>
+                {/** onSubmit is working when button which type is submit be clicked*/}
+                <form onSubmit = {this.props.handleSubmit(this.props.onSurveySubmit)}>
                     {/**Form contains all the Fields */}
                     {this.renderFields()}
                     <Link to="/surveys" className = "red btn-flat white-text">Cancel</Link>
@@ -44,20 +40,26 @@ class SurveyForm extends Component{
     }
 }
 
+//a function takes the values input in each form and return the error information if the input is not followed your requirement
+//And also shows the error information below each field
 function validate(values){
     //errors will contains in input.meta, go to SurveyField.js
     const errors = {};
 
-    _.each(FIELDS, ({ name }) => {
+    _.each(formFields, ({ name }) => {
         if(!values[name]){
             errors[name] = "You must provide a value"
         }
     })
 
+    errors.emails = validateEmails(values.emails||"");
+
     return errors;
 }
 
 export default reduxForm({
+    
     validate,
-    form: "surveyForm"
+    form: "surveyForm",
+    destroyOnUnmount: false 
 })(SurveyForm);

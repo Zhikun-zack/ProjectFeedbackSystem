@@ -1,42 +1,45 @@
 //SurveyFormReview shows users their form input for review
+import _ from "lodash";
 import React from "react";
 import { connect } from "react-redux";
+import formFields from "./formFeild";
+import * as actions from "../../actions";
 
 function mapStateToProps(state){
     //console.log(state)
     return { formValues: state.form.surveyForm.values }
 }
 
-const SurveyFormReview = ({ onCancel, formValues }) => {
+const SurveyFormReview = ({ onCancel, formValues, submitSurvey }) => {
+    const reviewFields = _.map(formFields,field => {
+        return (
+            <div key = {field.name}>
+                <label>{field.label}</label>
+                <div>
+                    {formValues[field.name]}
+                </div>
+            </div>
+        );
+    });
     return(
         <div>
             <h5>Please confirm you entries</h5>
-            <div>
-                <div>
-                    <label>Survey Title</label>
-                    <div>{formValues.title}</div>
-                </div>
-                <div>
-                    <label>Subject Line</label>
-                    <div>{formValues.title}</div>
-                </div>
-                <div>
-                    <label>Email Body</label>
-                    <div>{formValues.title}</div>
-                </div>
-                <div>
-                    <label>R</label>
-                    <div>{formValues.title}</div>
-                </div>
-            </div>
+            {reviewFields}
             <button
-                className = "yellow darken-3 btn-flat"
+                className = "yellow darken-3 white-text btn-flat"
                 onClick={ onCancel }
             >Back</button>
+            <button 
+                onClick = { () => submitSurvey(formValues) }
+                className = "green white-text btn-flat right"
+            >
+                Send Survey
+                <i className = "material-icons right">email</i>
+            </button>
         </div>
     );
 };
 
 
 
-export default connect(mapStateToProps)(SurveyFormReview);
+export default connect(mapStateToProps, actions)(SurveyFormReview);

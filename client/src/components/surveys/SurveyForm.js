@@ -9,7 +9,6 @@ import validateEmails from "../../utils/validateEmails";
 import formFields from "./formFeild";
 
 
-
 class SurveyForm extends Component{
     //used to render the fields and use the field defined myself not using Field library directly
     renderFields(){
@@ -52,7 +51,7 @@ function validate(values){
         }
     })
 
-    errors.emails = validateEmails(values.emails||"");
+    errors.recipients = validateEmails(values.recipients||"");
 
     return errors;
 }

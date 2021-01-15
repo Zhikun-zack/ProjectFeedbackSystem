@@ -1,5 +1,6 @@
 //SurveyNew will contain SurveyForm before submit and contain SurveyReview after submit
 import React, { Component } from "react";
+import { reduxForm } from "redux-form";
 import SurveyForm from "./SurveyForm";
 import SurveyFormReview from "./SurveyFormReview";
 
@@ -23,4 +24,8 @@ class SurveyNew extends Component{
     }
 };
 
-export default SurveyNew;
+//change between surveyForm and surveyFormReview, the input information will not change or disappear
+//While when the user go back to other page like dashboard, which means that the user has go back to surveyNew, the input information will be cleared
+export default reduxForm({
+    form: 'surveyForm'
+})(SurveyNew);

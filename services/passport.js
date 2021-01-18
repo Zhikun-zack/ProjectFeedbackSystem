@@ -23,19 +23,16 @@ const gStartegy = new GoogleStrategy({
     proxy: true
     },
     //error function
-    (accessToken, refreshToken, profile, done) => {
-        User.findOne({ googleId : profile.id }).then(existingUser => {
-            if (existingUser) {
-                //The user has already inside my database
-                done(null, existingUser);
-            }else{
-                //New user, so we have to add a new one
-                new User ({googleId : profile.id})
-                    .save()
-                    .then(user => done(null, user));
-            }
-        });
-});
+    async (accessToken, refreshToken, profile, done) => {
+        const existingUser = await User.findOne({ googleId: profile.id });
+  
+        if (existingUser) {
+          return done(null, existingUser);
+        }
+  
+        const user = await new User({ googleId: profile.id }).save();
+        done(null, user);
+      });
 //set agent if behind firewall
 const agent = new HttpsProxyAgent(process.env.HTTP_PROXY || "http://localhost:1080");
 gStartegy._oauth2.setAgent(agent);

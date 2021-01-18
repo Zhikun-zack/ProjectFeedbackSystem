@@ -2,14 +2,16 @@ const passport = require('passport');
 
 module.exports = app =>{
     //when users at this page, passport will start authentication process
-    app.get('/auth/google', passport.authenticate('google',{
+    app.get(
+        '/auth/google', 
+        passport.authenticate('google',{
         scope: ['profile','email'],
-    })
+        })
     );
 
     app.get(
         '/auth/google/callback',
-        passport.authenticate('google',{failWithError: true}),
+        passport.authenticate('google'),
         (req,res) => {
             //Get the callback results and change the route to new route
             //When clicked log in with google and authorized the browser, change the page to the Dashboard page(/survey)

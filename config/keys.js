@@ -1,11 +1,11 @@
 const { model } = require('mongoose');
 
 //keys.js figure out what set of credential to return
-if (process.env.NODE_ENV === 'production'){
-    //in production -return the prod set of keys
+if (process.env.NODE_ENV === 'production') {
+    // we are in production - return the prod set of keys
     module.exports = require('./prod');
-} else {
-    // in development - return the dev keys
+  } else {
+    // we are in development - return the dev keys!!!
     module.exports = require('./dev');
-
-}
+  }
+  

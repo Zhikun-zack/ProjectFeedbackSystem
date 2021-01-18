@@ -11,7 +11,7 @@ module.exports = app => {
         res.send("Thanks for voting!");
     });
 
-    app.post('/api/surveys', requireLogin, requireCredit,async (req,res) => {
+    app.post('/api/surveys', requireLogin, requireCredit, async (req,res) => {
         const { title, subject, body, recipients } = req.body;
         //Create a instance in Survey collection
         const survey = new Survey({

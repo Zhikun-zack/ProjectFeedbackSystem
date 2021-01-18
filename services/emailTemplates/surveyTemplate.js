@@ -1,3 +1,4 @@
+//Take survey content and input it into html template
 const key = require('../../config/keys');
 
 module.exports = (survey) => {

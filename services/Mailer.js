@@ -3,12 +3,14 @@ const helper = sendgrid.mail;
 const keys = require("../config/keys");
 
 class Mailer extends helper.Mail {
+    //Doing some initialization work
+    //surveyRoute.js calls "new Mailer(survey, surveyTemplate(survey))", the first param in constructor represent survey and the "content" represent template(HTML code)
     constructor({ subject, recipients }, content){
         super();
 
         this.sgApi = sendgrid(keys.sendGridKey);
         //attributes needed by sendgrid
-        this.from_email = new helper.Email("Place to put sender email");
+        this.from_email = new helper.Email("xiaweiliang94@gmail.com");
         this.subject = subject;
         this.body = new helper.Content("text/html", content);
         //formatAddresses function

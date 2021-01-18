@@ -9,7 +9,7 @@ require('./models/User');
 require("./models/Survey");
 require('./services/passport');
 
-mongoose.connect(keys.mongoURI);
+mongoose.connect(keys.mongoURI,() => { }, { useNewUrlParser: true }).then(() => console.log("success")).catch((err)=>{console.log("Faillllllll",err)});
 
 const app = express();
 

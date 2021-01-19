@@ -40,27 +40,27 @@ class Mailer extends helper.Mail {
     //and also sendgrid knows who click the link
     addClickTracking(){
         const trackingSettings = new helper.TrackingSettings();
-        const clickTracking = new helper.ClickTracking(true,true);
+        const clickTracking = new helper.ClickTracking(true, true);
 
         trackingSettings.setClickTracking(clickTracking);
         this.addTrackingSettings(trackingSettings);
     }
     //
-    addRecipients(){
+    addRecipients() {
         const personalize = new helper.Personalization();
-        this.recipients.forEach(recipient =>{
-            personalize.addTo(recipient);
+    
+        this.recipients.forEach(recipient => {
+          personalize.addTo(recipient);
         });
         this.addPersonalization(personalize);
-        
-    }
+      }
 
-    async send() {
-        const request = this.sgApi.emptyResquest({
-            method: 'POST',
-            path: '/v3/mail/send',
-            body: this.toJSON
-        });
+  async send() {
+    const request = this.sgApi.emptyRequest({
+      method: 'POST',
+      path: '/v3/mail/send',
+      body: this.toJSON()
+    });
         const response = await this.sgApi.API(request);
         return response;
     }

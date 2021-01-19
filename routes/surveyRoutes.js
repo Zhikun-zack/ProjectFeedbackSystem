@@ -1,3 +1,6 @@
+const _ = require ('lodash');
+const {Path} = require('path-parser');
+const { URL } = require('url');
 const mongoose = require("mongoose");
 const requireLogin = require("../middlewares/requireLogin");
 const requireCredit = require("../middlewares/requireCredit")
@@ -7,9 +10,25 @@ const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
 const Survey = mongoose.model('survey');
 
 module.exports = app => {
-    app.get("api/surveys/thanks", (req,res) => {
+    app.get("/api/surveys/thanks", (req,res) => {
         res.send("Thanks for voting!");
     });
+
+    app.post("/api/surveys/webhooks", (req,res) => {
+        const events = _.map(req.body, ({ email, url }) => {
+            //.pathname is the path section of the URL, that comes after the host and before the query, including the initial slash if present
+            const pathname = new URL(url).pathname;
+            const p = new Path('/api/surveys/:surveyId/:choice');
+            //console.log(p.test(pathname));
+            //match will be an object if return some value and will be null if doesnt return any value
+            const match = p.test(pathname);
+            if( match ){
+                return { email, surveyId: match.surveyId, choice: match.choice };
+            }
+        });
+
+        console.log(events);
+    })
 
     app.post('/api/surveys', requireLogin, requireCredit, async (req,res) => {
         const { title, subject, body, recipients } = req.body;
@@ -29,6 +48,7 @@ module.exports = app => {
         const mailer = new Mailer(survey, surveyTemplate(survey));
         try{
             await mailer.send();
+            //save the survey to the database
             await survey.save();
             //Update the credits
             req.user.credits -= 1;

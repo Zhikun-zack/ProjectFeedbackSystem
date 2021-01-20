@@ -15,19 +15,29 @@ module.exports = app => {
     });
 
     app.post("/api/surveys/webhooks", (req,res) => {
-        const events = _.map(req.body, ({ email, url }) => {
+        const p = new Path('/api/surveys/:surveyId/:choice');
+
+        const events = _.chain(req.body)
+         .map(({ email, url }) => {
             //.pathname is the path section of the URL, that comes after the host and before the query, including the initial slash if present
-            const pathname = new URL(url).pathname;
-            const p = new Path('/api/surveys/:surveyId/:choice');
             //console.log(p.test(pathname));
             //match will be an object if return some value and will be null if doesnt return any value
-            const match = p.test(pathname);
+            const match = p.test(new URL(url).pathname);
             if( match ){
                 return { email, surveyId: match.surveyId, choice: match.choice };
             }
-        });
+        })
+        //console.log(events);
+        //Remove the "undefinded" event
+        .compact()
+        //Remove the duplicated event, to avoid that the user click the same <a> tag several time
+        .uniqBy("email","surveyId")
+        .value();
 
         console.log(events);
+
+        //Send the data back to webhook,webhook will know the post process has success, otherwise the webhook will repeat execute the code above and we will get results repeatedly
+        res.send({});
     })
 
     app.post('/api/surveys', requireLogin, requireCredit, async (req,res) => {

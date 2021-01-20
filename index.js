@@ -9,6 +9,7 @@ require('./models/User');
 require("./models/Survey");
 require('./services/passport');
 
+//Using mongoose to connect to mongodb that hosted in mongodb atlas and I created
 mongoose.connect(keys.mongoURI,() => { }, { useNewUrlParser: true }).then(() => console.log("success")).catch((err)=>{console.log("Faillllllll",err)});
 
 const app = express();

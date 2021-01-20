@@ -10,14 +10,14 @@ const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
 const Survey = mongoose.model('survey');
 
 module.exports = app => {
-    app.get("/api/surveys/thanks", (req,res) => {
+    app.get("/api/surveys/:surveyId/:choice", (req,res) => {
         res.send("Thanks for voting!");
     });
 
     app.post("/api/surveys/webhooks", (req,res) => {
         const p = new Path('/api/surveys/:surveyId/:choice');
 
-        const events = _.chain(req.body)
+        _.chain(req.body)
          .map(({ email, url }) => {
             //.pathname is the path section of the URL, that comes after the host and before the query, including the initial slash if present
             //console.log(p.test(pathname));
@@ -32,9 +32,22 @@ module.exports = app => {
         .compact()
         //Remove the duplicated event, to avoid that the user click the same <a> tag several time
         .uniqBy("email","surveyId")
+        .each(({surveyId,email,choice}) => {
+            Survey.updateOne(
+                {
+                    _id: surveyId,
+                    recipients: {
+                        $elemMatch: { email: email, responded: false }
+                    } 
+                },
+                {
+                    $inc: { [choice]: 1 },
+                    $set: { 'recipients.$.responded': true },
+                    lastResponded: new Date(),
+                }
+            ).exec();
+        })
         .value();
-
-        console.log(events);
 
         //Send the data back to webhook,webhook will know the post process has success, otherwise the webhook will repeat execute the code above and we will get results repeatedly
         res.send({});

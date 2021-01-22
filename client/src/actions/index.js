@@ -1,5 +1,6 @@
 import axios from "axios";
 import { FETCH_USER } from "./types";
+import { FETCH_SURVEY } from "./types";
 
 //Send request to server side, To find whether the user has been authorized 
 //An action creater
@@ -30,5 +31,5 @@ export const submitSurvey = (values, history) =>
 export const fetchSurveys = () => async dispatch => {
     const res = await axios.get('/api/surveys');
 
-    dispatch({type: FETCH_SURVEYS, payload: res.data});
+    dispatch({type: FETCH_SURVEY, payload: res.data});
 }   

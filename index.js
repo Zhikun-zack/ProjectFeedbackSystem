@@ -5,8 +5,10 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require("./config/keys");
 const bodyParser = require('body-parser');
+//First invoke the mongoDB collection then the passport file can use them
 require('./models/User');
 require("./models/Survey");
+//invoke passport
 require('./services/passport');
 
 //Using mongoose to connect to mongodb that hosted in mongodb atlas and I created
@@ -23,7 +25,9 @@ app.use(
         keys: [keys.cookieKey],
     })
 );
+//Initialize the passport
 app.use(passport.initialize());
+//Using the session cookie
 app.use(passport.session());
 
 //All of the route handler

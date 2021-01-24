@@ -1,3 +1,4 @@
+//Contain all the route handlers that needs in the process of google auth
 const passport = require('passport');
 
 module.exports = app =>{
@@ -5,6 +6,7 @@ module.exports = app =>{
     app.get(
         '/auth/google', 
         passport.authenticate('google',{
+        //What data attribute that we want to access
         scope: ['profile','email'],
         })
     );

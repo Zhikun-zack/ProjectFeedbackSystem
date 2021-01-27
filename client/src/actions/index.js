@@ -4,6 +4,7 @@ import { FETCH_SURVEY } from "./types";
 
 //Send request to server side, To find whether the user has been authorized 
 //An action creater
+//Using dispatch to dispatch actions
 export const fetchUser = () => 
     //ReduxThunk will check automatically when return is a function, and automatically execute the dispatch function in the argument without need store.dispatch
     async dispatch => {

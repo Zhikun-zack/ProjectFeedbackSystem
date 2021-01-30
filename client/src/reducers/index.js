@@ -4,6 +4,7 @@ import { reducer as reduxForm } from "redux-form";
 import authReducer from "./authReducers";
 import surveysReducer from "./surveyReducer";
 
+//combineReducers turns different reducers into a single reducers
 export default combineReducers({
     //The return state will have these properties
     auth: authReducer,

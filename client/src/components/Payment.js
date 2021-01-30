@@ -12,6 +12,7 @@ class Payments extends Component {
                 description = "$5 for 5 email credits"
                 //charge 5 dollars 
                 amount = {500}
+                //callback function input token is the token get from stripe
                 token = {token => this.props.handleToken(token)}
                 stripeKey = {process.env.REACT_APP_STRIPE_KEY}
             >

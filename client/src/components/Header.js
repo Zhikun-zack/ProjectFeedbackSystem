@@ -6,11 +6,13 @@ import Payments from "./Payment";
 class Header extends Component {
     //Used to change the page based on the auth value
     renderContent(){
-        //auth tells whether the user has logged in
+        //auth is the key of authreducer in combineReducer and use to tell whether the user has logged in
         switch (this.props.auth){
             case null :
+                //still holding on
                 return;
             case false:
+                //the user didn't log in
                 return (
                     <li><a href = "/auth/google">Login With Google</a></li>
                 );

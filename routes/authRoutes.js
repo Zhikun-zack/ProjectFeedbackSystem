@@ -5,6 +5,7 @@ module.exports = app =>{
     //when users at this page, passport will start authentication process
     app.get(
         '/auth/google', 
+        //'google' represent Google OAuth Strategy
         passport.authenticate('google',{
         //What data attribute that we want to access
         scope: ['profile','email'],
